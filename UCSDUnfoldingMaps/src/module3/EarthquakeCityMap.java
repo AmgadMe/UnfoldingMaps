@@ -69,71 +69,143 @@ public class EarthquakeCityMap extends PApplet {
 	    // The List you will populate with new SimplePointMarkers
 	    List<Marker> markers = new ArrayList<Marker>();
 
-	    //Use provided parser to collect properties for each earthquake
-	    //PointFeatures have a getLocation method
+	    
 	    List<PointFeature> earthquakes = ParseFeed.parseEarthquake(this, earthquakesURL);
 	    
-	    //TODO (Step 3): Add a loop here that calls createMarker (see below) 
-	    // to create a new SimplePointMarker for each PointFeature in 
-	    // earthquakes.  Then add each new SimplePointMarker to the 
-	    // List markers (so that it will be added to the map in the line below)
-	    
-	    
-	    // Add the markers to the map so that they are displayed
-	    map.addMarkers(markers);
-	}
-		
-	/* createMarker: A suggested helper method that takes in an earthquake 
-	 * feature and returns a SimplePointMarker for that earthquake
-	 * 
-	 * In step 3 You can use this method as-is.  Call it from a loop in the 
-	 * setp method.  
-	 * 
-	 * TODO (Step 4): Add code to this method so that it adds the proper 
-	 * styling to each marker based on the magnitude of the earthquake.  
-	*/
-	private SimplePointMarker createMarker(PointFeature feature)
-	{  
-		// To print all of the features in a PointFeature (so you can see what they are)
-		// uncomment the line below.  Note this will only print if you call createMarker 
-		// from setup
-		//System.out.println(feature.getProperties());
-		
-		// Create a new SimplePointMarker at the location given by the PointFeature
-		SimplePointMarker marker = new SimplePointMarker(feature.getLocation());
-		
-		Object magObj = feature.getProperty("magnitude");
-		float mag = Float.parseFloat(magObj.toString());
-		
-		// Here is an example of how to use Processing's color method to generate 
-	    // an int that represents the color yellow.  
-	    int yellow = color(255, 255, 0);
-		
-		// TODO (Step 4): Add code below to style the marker's size and color 
-	    // according to the magnitude of the earthquake.  
-	    // Don't forget about the constants THRESHOLD_MODERATE and 
-	    // THRESHOLD_LIGHT, which are declared above.
-	    // Rather than comparing the magnitude to a number directly, compare 
-	    // the magnitude to these variables (and change their value in the code 
-	    // above if you want to change what you mean by "moderate" and "light")
-	    
-	    
-	    // Finally return the marker
-	    return marker;
-	}
 	
-	public void draw() {
-	    background(10);
-	    map.draw();
-	    addKey();
+
+	    if (earthquakes.size() > 0) {
+
+	    	PointFeature f = earthquakes.get(0);
+	    	System.out.println(f.getProperties());
+	    	Object magObj = f.getProperty("magnitude");
+	    	float mag = Float.parseFloat(magObj.toString());
+
+	    	// PointFeatures also have a getLocation method
+
+	    }
+
+	    
+
+	    // Here is an example of how to use Processing's color method to generate 
+
+	    // an int that represents the color yellow.  
+
+	    int yellow = color(255, 255, 0);
+	    int gray = color(150, 150, 150);
+        int red = color(255, 0, 0);
+        int blue = color(0, 0, 255);
+
+	    
+
+	    //TODO: Add code here as appropriate
+
+	    for(PointFeature eq: earthquakes) {
+
+	    	SimplePointMarker mk = new SimplePointMarker(eq.getLocation(), eq.getProperties());
+
+		    if ((float)mk.getProperty("magnitude") >= 3.0 && (float)mk.getProperty("magnitude") < 4.0) {
+
+	    		mk.setColor(gray);
+                mk.setRadius(5);
+
+	    	}
+
+	    	else if((float)mk.getProperty("magnitude") >= 4.0 && (float)mk.getProperty("magnitude") < 5.0) {
+
+	    		mk.setColor(yellow);
+                mk.setRadius(10);
+
+	    	}
+
+	    	else if((float)mk.getProperty("magnitude") >= 5.0) {
+
+	    		mk.setColor(red);
+                mk.setRadius(15);
+
+	    	}
+
+	    	markers.add(mk);
+
+	    }
+
+	    
+
+
+	    
+
+	    map.addMarkers(markers);
+
 	}
+
+		
+
+	// A suggested helper method that takes in an earthquake feature and 
+
+	// returns a SimplePointMarker for that earthquake
+
+	// TODO: Implement this method and call it from setUp, if it helps
+
+	private SimplePointMarker createMarker(PointFeature feature)
+
+	{
+
+		return new SimplePointMarker(feature.getLocation());
+
+	}
+
+	
+
+	public void draw() {
+
+	    background(10);
+
+	    map.draw();
+
+	    addKey();
+
+	}
+
+
+
 
 
 	// helper method to draw key in GUI
+
 	// TODO: Implement this method to draw the key
+
 	private void addKey() 
+
 	{	
+
 		// Remember you can use Processing's graphics methods here
+
+		fill(255, 250, 240); 
+		rect(25, 50, 150, 250);
+
+
+
+		fill(0);
+             text("Earthquake Key", 50, 80); 
+        text("5.0+ Magnitude", 75, 130);
+        text("4.0+ Magnitude", 75, 180);
+        text("Below 4.0", 75, 230);
+
+		
+
+		      fill(color(255, 0, 0));
+        ellipse(50, 125, 15, 15);
+        fill(color(255, 255, 0));
+        ellipse(50, 175, 10, 10);
+        fill(color(0, 0, 255));
+        ellipse(50, 225, 5, 5);
+
+
+
+
+
 	
+
 	}
+
 }
