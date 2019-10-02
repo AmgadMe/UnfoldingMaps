@@ -33,7 +33,7 @@ public class EarthquakeCityMap extends PApplet {
 	private static final long serialVersionUID = 1L;
 
 	// IF YOU ARE WORKING OFFLINE, change the value of this variable to true
-	private static final boolean offline = false;
+	private static final boolean offline = true;
 	
 	// Less than this threshold is a light earthquake
 	public static final float THRESHOLD_MODERATE = 5;
@@ -102,6 +102,9 @@ public class EarthquakeCityMap extends PApplet {
 
 	    for(PointFeature eq: earthquakes) {
 
+	    	if ((float)eq.getProperty("magnitude") < 3.0)
+	    		continue;
+	    	
 	    	SimplePointMarker mk = new SimplePointMarker(eq.getLocation(), eq.getProperties());
 
 		    if ((float)mk.getProperty("magnitude") >= 3.0 && (float)mk.getProperty("magnitude") < 4.0) {
@@ -189,7 +192,7 @@ public class EarthquakeCityMap extends PApplet {
              text("Earthquake Key", 50, 80); 
         text("5.0+ Magnitude", 75, 130);
         text("4.0+ Magnitude", 75, 180);
-        text("Below 4.0", 75, 230);
+        text("3.0 - 4.0", 75, 230);
 
 		
 
@@ -197,7 +200,7 @@ public class EarthquakeCityMap extends PApplet {
         ellipse(50, 125, 15, 15);
         fill(color(255, 255, 0));
         ellipse(50, 175, 10, 10);
-        fill(color(0, 0, 255));
+        fill(color(150, 150, 150));
         ellipse(50, 225, 5, 5);
 
 
